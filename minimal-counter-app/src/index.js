@@ -2,44 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import thunk from 'redux-thunk'
+import allReducers from './reducers/index'
 
-//store
+const middleware = [thunk]
 
-// actions
-
-const increment = () => {
-  return {
-    type: 'INCREMENT',
-
-  }
-}
-
-const decrement = () => {
-  return {
-    type: 'DECREMENT'
-  }
-}
-
-// reducer
-
-const counter = (state = 0, action) => {
-  switch (action.type) {
-    case 'INCREMENT':
-      return state +1
-    case 'DECREMENT':
-      return state - 1
-  }
-}
-
-let store = createStore(counter)
-
-//display it in console
-store.subscribe( () => console.log(store.getState()))
-
-// dispatch
-
-store.dispatch(increment())
+const store = createStore(
+  allReducers, 
+  composeWithDevTools(applyMiddleware(...middleware))
+)
 
 ReactDOM.render(
   <React.StrictMode>
